@@ -1,29 +1,20 @@
 package net.server.model;
 
-import com.google.gson.Gson;
 import java.sql.Timestamp;
-import java.util.List;
 
-public class SensorState {
+public class GSONResponse {
     private Integer id;
     private Integer sensorId;
     private String sensorState;
     private Timestamp sensorResponseTime;
+    private Integer typeId;
 
-    public SensorState(Integer id, Integer sensorId, String sensorState, Timestamp sensorResponseTime) {
+    public GSONResponse(Integer id, Integer sensorId, String sensorState, Timestamp sensorResponseTime, Integer typeId) {
         this.id = id;
         this.sensorId = sensorId;
         this.sensorState = sensorState;
         this.sensorResponseTime = sensorResponseTime;
-    }
-
-    public SensorState(Integer sensorId, String sensorState, Timestamp sensorResponseTime) {
-        this.sensorId = sensorId;
-        this.sensorState = sensorState;
-        this.sensorResponseTime = sensorResponseTime;
-    }
-
-    public SensorState() {
+        this.typeId = typeId;
     }
 
     public Integer getId() {
@@ -56,5 +47,13 @@ public class SensorState {
 
     public void setSensorResponseTime(Timestamp sensorResponseTime) {
         this.sensorResponseTime = sensorResponseTime;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 }

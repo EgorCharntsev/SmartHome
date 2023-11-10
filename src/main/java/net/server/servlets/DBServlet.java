@@ -1,7 +1,10 @@
 package net.server.servlets;
 
+import com.google.gson.Gson;
 import net.server.dao.SensorDao;
 import net.server.dao.SensorStateDao;
+import net.server.model.GSONResponse;
+import net.server.model.Sensor;
 import net.server.model.SensorState;
 import net.util.DatabaseConnectionUtil;
 
@@ -29,17 +32,20 @@ public class DBServlet extends HttpServlet {
         SensorStateDao sensorStateDao = new SensorStateDao();
         List<SensorState> fullList = sensorStateDao.getAll();
         List<SensorState> list = new ArrayList<>();
-        for (int i = 1; i<=counti; i++) {
-            list.add(fullList.get(fullList.size() - i));
+        SensorDao sensorDao = new SensorDao();
+        List<GSONResponse> response = new ArrayList<>();
+        for (int i = 1; i <= counti; i++) {
+            SensorState ss = fullList.get(fullList.size() - i);
+            int typeId = sensorDao.get(fullList.get(fullList.size() - i).getSensorId()).getSensorTypeId();
+            GSONResponse gsonResponse = new GSONResponse(ss.getId(), ss.getSensorId(), ss.getSensorState(), ss.getSensorResponseTime(), typeId);
+            response.add(gsonResponse);
         }
-        String json = new SensorState().convertListToJson(list);
+        Gson gson = new Gson();
+        String json = gson.toJson(response);
         PrintWriter pw = resp.getWriter();
         resp.setContentType("application/json");
         pw.print(json);
         pw.close();
-        //req.setAttribute("list", list);
-        //resp.sendRedirect("db.ftl");
-        //req.getRequestDispatcher("db.ftl").forward(req,resp);
     }
 
     @Override

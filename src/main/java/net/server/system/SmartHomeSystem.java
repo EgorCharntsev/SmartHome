@@ -26,7 +26,10 @@ public class SmartHomeSystem {
     public void run() {
         List<Sensor> availableSensors = sensorDao.getAll();
         for (Sensor availableSensor : availableSensors) {
-            int sensorState = (int) (Math.random());
+            int sensorState;
+            if (Math.random() <= 0.5) {
+                sensorState = 0;
+            } else sensorState = 1;
             sensorStateDao.insert(new SensorState(
                     availableSensor.getId(),
                     String.valueOf(sensorState),

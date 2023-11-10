@@ -18,8 +18,8 @@
         }
 
         .card {
-            width: 18rem;
-            height: 24rem;
+            width: 14rem;
+            height: 20rem;
             left: 25%;
         }
     </style>
@@ -40,24 +40,25 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+    <button class="btn btn-primary"></button>
 </div>
 </body>
 
 <script>
-    function addSensor(id, isActive) {
+    function addSensorNotChecked(id, isActive, type, description, state) {
         $("#sensors").append(
             $("<div>").addClass(`carousel-item${isActive}`).append(
                 $("<div>").addClass("card w-50").append(
-                    $(`<img id='image${id}' src='https://www.tadviser.ru/images/f/fb/Google_logo_2015.png' alt='sensor-icon'>`).addClass("card-img-top"),
                     $("<div>").addClass("card-body").append(
                         $("<div>").addClass("container").append(
                             $("<div>").addClass("row").append(
                                 $("<div>").addClass("col"),
                                 $("<div>").addClass("col align-self-center").append(
-                                    $(`<h5 id='title${id}'>`).addClass("card-title").text("Smoke Sensor"),
+                                    $(`<h5 id='title${id}'>`).addClass("card-title").text(`${type}`),
+                                    $(`<p id='desc${id}'>`).add("card-text").text(`${description}`),
                                     $("<div>").addClass("form-switch").append(
                                         $(`<input class='form-check-input' id='state${id}' type='checkbox' disabled>`),
-                                        $(`<label for='state${id}'>`).html(`enabled${id}`)
+                                        $(`<label for='state${id}'>`).html(`${state}`)
                                     )
                                 ),
                                 $("<div>").addClass("col")
@@ -68,10 +69,90 @@
             )
         )
     }
+
+    function addSensorChecked(id, isActive, type, description, state) {
+        $("#sensors").append(
+            $("<div>").addClass(`carousel-item${isActive}`).append(
+                $("<div>").addClass("card w-50").append(
+                    $("<div>").addClass("card-body").append(
+                        $("<div>").addClass("container").append(
+                            $("<div>").addClass("row").append(
+                                $("<div>").addClass("col"),
+                                $("<div>").addClass("col align-self-center").append(
+                                    $(`<h5 id='title${id}'>`).addClass("card-title").text(`${type}`),
+                                    $(`<p id='desc${id}'>`).add("card-text").text(`${description}`),
+                                    $("<div>").addClass("form-switch").append(
+                                        $(`<input class='form-check-input' id='state${id}' type='checkbox' disabled checked>`),
+                                        $(`<label for='state${id}'>`).html(`${state}`)
+                                    )
+                                ),
+                                $("<div>").addClass("col")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    }
+
     $(document).ready(function () {
-        addSensor(2, " active")
-        addSensor(3, "")
-        addSensor(4, "")
+        $("#sensors").empty()
+        $.get("/db", function (response) {
+            let array = response
+            for (let i = 0; i < array.length; i++) {
+                //alert(array[i].id)
+                let type
+                let description
+                let state
+                switch (array[i].typeId) {
+                    case 2:
+                        type = "Motion sensor"
+                        description = "Reacts to all movements in its visibility area"
+                        if (array[i].sensorState === "0") {
+                            state = "Motion is not detected"
+                        } else state = "Motion is detected"
+                        break
+                    case 3:
+                        type = "Curtain and blind control sensor"
+                        description = "Controls curtains and blinds, switches them to one of two states"
+                        if (array[i].sensorState === "0") {
+                            state = "Curtain and blinds are closed"
+                        } else state = "Curtain and blinds are opened"
+                        break
+                    case 4:
+                        type = "Water leakage sensor"
+                        description = "Reacts to water leakage in a specific area"
+                        if (array[i].sensorState === "0") {
+                            state = "Leakage is not detected"
+                        } else state = "Leakage is detected"
+                        break
+                    case 5:
+                        type = "Door/window opening sensor"
+                        description = "Reacts to door/window opening"
+                        if (array[i].sensorState === "0") {
+                            state = "Door/window is closed"
+                        } else state = "Door/window is opened"
+                        break
+                    case 6:
+                        type = "Smoke detector"
+                        description = "Reacts to the appearance of any smoke in a certain area"
+                        if (array[i].sensorState === "0") {
+                            state = "Smoke is not detected"
+                        } else state = "Smoke is detected"
+                        break
+                }
+                if (i === 0) {
+                    if (array[i].sensorState === "0") {
+                        addSensorNotChecked(i, " active", type, description, state)
+                    } else addSensorChecked(i, " active", type, description, state)
+
+                } else {
+                    if (array[i].sensorState === "0") {
+                        addSensorNotChecked(i, "", type, description, state)
+                    } else addSensorChecked(i, "", type, description, state)
+                }
+            }
+        })
     })
 </script>
 </html>

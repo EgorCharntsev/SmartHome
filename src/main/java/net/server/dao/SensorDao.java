@@ -13,24 +13,24 @@ public class SensorDao implements Dao<Sensor> {
 
     private Sensor sensorFromResultSet(ResultSet resultSet) throws SQLException {
         return new Sensor(
-                resultSet.getInt(1),
-                resultSet.getInt(2),
-                resultSet.getBoolean(3),
-                resultSet.getString(4),
-                resultSet.getTimestamp(5)
+                resultSet.getInt("id"),
+                resultSet.getInt("type_id"),
+                resultSet.getBoolean("status"),
+                resultSet.getString("state"),
+                resultSet.getTimestamp("commission_date")
         );
     }
 
     @Override
     public void insert(Sensor sensor) {
-        String query = "INSERT INTO sensors (sensor_type_id, sensor_status, sensor_state, sensor_commission_date) " +
+        String query = "INSERT INTO sensors (status, state, commission_date, type_id) " +
                 "VALUES (?, ?, ?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, sensor.getSensorTypeId());
-            preparedStatement.setBoolean(2, sensor.getSensorStatus());
-            preparedStatement.setString(3, sensor.getSensorState());
-            preparedStatement.setTimestamp(4, sensor.getSensorCommissionDate());
-            preparedStatement.executeQuery();
+            preparedStatement.setBoolean(1, sensor.getSensorStatus());
+            preparedStatement.setString(2, sensor.getSensorState());
+            preparedStatement.setTimestamp(3, sensor.getSensorCommissionDate());
+            preparedStatement.setInt(4, sensor.getSensorTypeId());
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -62,6 +62,19 @@ public class SensorDao implements Dao<Sensor> {
                 sensors.add(sensorFromResultSet(resultSet));
             }
             return sensors;
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public int getCount() {
+        String query = "SELECT COUNT(*) FROM sensors";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            return -1;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }

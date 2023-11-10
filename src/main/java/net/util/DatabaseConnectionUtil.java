@@ -9,7 +9,8 @@ public class DatabaseConnectionUtil {
     public static final String DRIVER = "org.postgresql.Driver";
     public static final String URL = "jdbc:postgresql://localhost:5432/DatabaseCW";
     public static final String USER = "postgres";
-    public static final String PASSWORD = "1234";//пофиксить надо, тут непонятка
+    public static final String PASSWORD = "1234";
+  
     private static Connection connection;
 
     public static Connection getConnection() {

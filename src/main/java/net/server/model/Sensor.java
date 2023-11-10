@@ -7,21 +7,18 @@ public class Sensor {
     private Integer id;
     private Integer sensorTypeId;
     private Boolean sensorStatus;
-    private String sensorState;
     private Timestamp sensorCommissionDate;
 
-    public Sensor(Integer id, Integer sensorTypeId, Boolean sensorStatus, String sensorState, Timestamp sensorCommissionDate) {
+    public Sensor(Integer id, Integer sensorTypeId, Boolean sensorStatus, Timestamp sensorCommissionDate) {
         this.id = id;
         this.sensorTypeId = sensorTypeId;
         this.sensorStatus = sensorStatus;
-        this.sensorState = sensorState;
         this.sensorCommissionDate = sensorCommissionDate;
     }
 
-    public Sensor(Integer sensorTypeId, Boolean sensorStatus, String sensorState, Timestamp sensorCommissionDate) {
+    public Sensor(Integer sensorTypeId, Boolean sensorStatus, Timestamp sensorCommissionDate) {
         this.sensorTypeId = sensorTypeId;
         this.sensorStatus = sensorStatus;
-        this.sensorState = sensorState;
         this.sensorCommissionDate = sensorCommissionDate;
     }
 
@@ -47,14 +44,6 @@ public class Sensor {
 
     public void setSensorStatus(Boolean sensorStatus) {
         this.sensorStatus = sensorStatus;
-    }
-
-    public String getSensorState() {
-        return sensorState;
-    }
-
-    public void setSensorState(String sensorState) {
-        this.sensorState = sensorState;
     }
 
     public Timestamp getSensorCommissionDate() {

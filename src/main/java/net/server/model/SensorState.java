@@ -1,6 +1,8 @@
 package net.server.model;
 
+import com.google.gson.Gson;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class SensorState {
     private Integer id;
@@ -19,6 +21,14 @@ public class SensorState {
         this.sensorId = sensorId;
         this.sensorState = sensorState;
         this.sensorResponseTime = sensorResponseTime;
+    }
+
+    public SensorState() {
+    }
+
+    public String convertListToJson(List<SensorState> list) {
+        Gson gson = new Gson();
+        return gson.toJson(list);
     }
 
     public Integer getId() {

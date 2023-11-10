@@ -26,11 +26,6 @@ public class SensorState {
     public SensorState() {
     }
 
-    public String convertListToJson(List<SensorState> list) {
-        Gson gson = new Gson();
-        return gson.toJson(list);
-    }
-
     public Integer getId() {
         return id;
     }

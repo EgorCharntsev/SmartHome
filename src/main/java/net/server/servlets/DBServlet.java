@@ -1,4 +1,4 @@
-package net.server;
+package net.server.servlets;
 
 import net.util.DatabaseConnectionUtil;
 

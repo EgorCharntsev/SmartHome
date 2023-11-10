@@ -1,6 +1,14 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+.gitignore
+/compiler.xml
+/dataSources.xml
+/jarRepositories.xml
+/misc.xml
+/modules.xml
+/SmartHome.iml
+/vcs.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files

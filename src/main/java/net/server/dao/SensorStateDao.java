@@ -13,22 +13,22 @@ public class SensorStateDao implements Dao<SensorState> {
 
     private SensorState sensorStateFromResultSet(ResultSet resultSet) throws SQLException {
         return new SensorState(
-                resultSet.getInt(1),
-                resultSet.getInt(2),
-                resultSet.getString(3),
-                resultSet.getTimestamp(4)
+                resultSet.getInt("id"),
+                resultSet.getInt("sensor_id"),
+                resultSet.getString("sensor_state"),
+                resultSet.getTimestamp("response_time")
         );
     }
 
     @Override
     public void insert(SensorState sensorState) {
-        String query = "INSERT INTO sensor_states (sensor_id, sensor_state, sensor_response_time) " +
+        String query = "INSERT INTO sensor_states (sensor_state, response_time, sensor_id) " +
                 "VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, sensorState.getSensorId());
-            preparedStatement.setString(2, sensorState.getSensorState());
-            preparedStatement.setTimestamp(3, sensorState.getSensorResponseTime());
-            preparedStatement.executeQuery();
+            preparedStatement.setString(1, sensorState.getSensorState());
+            preparedStatement.setTimestamp(2, sensorState.getSensorResponseTime());
+            preparedStatement.setInt(3, sensorState.getSensorId());
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }

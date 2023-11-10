@@ -13,7 +13,6 @@ import java.util.List;
 public class SmartHomeSystem {
 
     private static SmartHomeSystem instance;
-    private final Connection connection = DatabaseConnectionUtil.getConnection();
     private final SensorDao sensorDao = new SensorDao();
     private final SensorStateDao sensorStateDao = new SensorStateDao();
 
@@ -27,9 +26,10 @@ public class SmartHomeSystem {
     public void run() {
         List<Sensor> availableSensors = sensorDao.getAll();
         for (Sensor availableSensor : availableSensors) {
+            int sensorState = (int) (Math.random());
             sensorStateDao.insert(new SensorState(
                     availableSensor.getId(),
-                    String.valueOf((int) (Math.random() * 10)),
+                    String.valueOf(sensorState),
                     new Timestamp(System.currentTimeMillis())
             ));
         }

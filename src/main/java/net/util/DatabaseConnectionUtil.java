@@ -7,10 +7,9 @@ import java.sql.SQLException;
 public class DatabaseConnectionUtil {
 
     public static final String DRIVER = "org.postgresql.Driver";
-    public static final String URL = "jdbc:postgresql://localhost:5432/DatabaseCW";
+    public static final String URL = "jdbc:postgresql://localhost:5432/smarthome";
     public static final String USER = "postgres";
-    public static final String PASSWORD = "1234";
-  
+    public static final String PASSWORD = "4950";//пофиксить надо, тут непонятка
     private static Connection connection;
 
     public static Connection getConnection() {

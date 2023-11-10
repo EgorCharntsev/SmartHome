@@ -16,20 +16,18 @@ public class SensorDao implements Dao<Sensor> {
                 resultSet.getInt("id"),
                 resultSet.getInt("type_id"),
                 resultSet.getBoolean("status"),
-                resultSet.getString("state"),
                 resultSet.getTimestamp("commission_date")
         );
     }
 
     @Override
     public void insert(Sensor sensor) {
-        String query = "INSERT INTO sensors (status, state, commission_date, type_id) " +
-                "VALUES (?, ?, ?, ?);";
+        String query = "INSERT INTO sensors (status, commission_date, type_id) " +
+                "VALUES (?, ?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setBoolean(1, sensor.getSensorStatus());
-            preparedStatement.setString(2, sensor.getSensorState());
-            preparedStatement.setTimestamp(3, sensor.getSensorCommissionDate());
-            preparedStatement.setInt(4, sensor.getSensorTypeId());
+            preparedStatement.setTimestamp(2, sensor.getSensorCommissionDate());
+            preparedStatement.setInt(3, sensor.getSensorTypeId());
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
